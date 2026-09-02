@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Our Little Universe</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <div id="webgl-wrap"></div>
+  <div class="ambient-glow glow-a"></div><div class="ambient-glow glow-b"></div>
+
+  <section id="page1" class="page active">
+    <div class="opening-stars"></div>
+    <div class="opening-card game-gate puzzle-gate">
+      <div class="eyebrow">01 / OUR LITTLE PUZZLE</div>
+      <h1>ต่อภาพของเรา</h1>
+      <p>ค่อย ๆ ต่อชิ้นส่วนให้เป็นภาพเดียวกัน แล้วจักรวาลของเราจะเปิดให้ทันที</p>
+
+      <div class="game-hud puzzle-hud">
+        <div><span class="hud-label">PIECES</span><strong id="gameScore">0 / 12</strong></div>
+        <div><span class="hud-label">STATUS</span><strong id="gameTime">READY</strong></div>
+      </div>
+
+      <div id="gameArena" class="game-arena puzzle-arena" aria-label="เกมต่อจิ๊กซอว์"></div>
+      <div id="gameMessage" class="game-message">กด START แล้วลากชิ้นส่วนไปวางให้ตรงตำแหน่ง</div>
+      <button id="startGameBtn" class="primary">START PUZZLE</button>
+      <div class="tip">12 PIECES · DRAG & SNAP</div>
+    </div>
+  </section>
+
+  <section id="page2" class="page page-universe">
+    <div id="memoryLayer" aria-label="ความทรงจำของเรา"></div>
+  </section>
+
+  <div id="finishOverlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="finish-mark">LOVE / 02</div>
+      <div class="eyebrow">FOR YOU</div>
+      <h2>Our universe<br>still goes on.</h2>
+      <p>ขอบคุณที่ทำให้ทุกวันธรรมดา กลายเป็นวันที่น่าจดจำ</p>
+      <button id="replayBtn" class="primary small">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <div id="memoryModal" class="overlay hidden" aria-hidden="true">
+    <div class="overlay-card memory-modal">
+      <button id="closeMemory" class="close" aria-label="ปิด">CLOSE</button>
+      <div class="eyebrow">OUR MEMORY</div>
+      <div class="memory-gallery">
+        <button id="memoryPrev" class="gallery-arrow" type="button" aria-label="รูปก่อนหน้า">‹</button>
+        <div id="memoryVisual" class="memory-visual"></div>
+        <button id="memoryNext" class="gallery-arrow" type="button" aria-label="รูปถัดไป">›</button>
+      </div>
+      <div id="memoryPhotoCount" class="memory-photo-count">1 / 1</div>
+      <div id="memoryNumber" class="memory-number">01</div>
+      <h2 id="memoryTitle"></h2>
+      <p id="memoryText"></p>
+      <button id="backUniverse" class="primary small">BACK TO UNIVERSE</button>
+    </div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="loader-orbit"><span></span></div>
+    <div class="loading-label">Preparing our universe...</div>
+  </div>
+  <div id="toast"></div>
+</div>
+<audio id="audio" src="assets/our-universe-music.mp3" preload="auto" loop></audio>
+<div id="soundToggle" class="sound-toggle" aria-label="เปิดหรือปิดเพลง"><span class="sound-dot"></span><span class="sound-label">MUSIC</span></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

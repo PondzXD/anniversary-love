@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05030b">
+<title>Our Next Meeting ✦ Our Little Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=DM+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="countdown.css">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="ambient glow-a"></div><div class="ambient glow-b"></div>
+<main class="shell">
+  <header class="topline"><a class="brand" href="../">OUR LITTLE UNIVERSE</a><span class="edition">A LITTLE CLOSER · 01</span></header>
+  <section class="card">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="eyebrow"><span class="pulse"></span> COUNTING DOWN TO YOU</div>
+    <div class="heart" aria-hidden="true">♥</div>
+    <h1>อีกนิดเดียว<br><span>เราก็จะได้เจอกัน</span></h1>
+    <p class="subtitle">ทุกวินาทีที่ผ่านไป คืออีกหนึ่งก้าวที่พาเราเข้าใกล้กัน</p>
+    <div class="countdown" aria-live="polite">
+      <div class="timebox"><strong id="days">--</strong><span>DAYS</span></div>
+      <div class="colon">:</div>
+      <div class="timebox"><strong id="hours">--</strong><span>HOURS</span></div>
+      <div class="colon">:</div>
+      <div class="timebox"><strong id="minutes">--</strong><span>MINUTES</span></div>
+      <div class="colon">:</div>
+      <div class="timebox"><strong id="seconds">--</strong><span>SECONDS</span></div>
+    </div>
+    <div id="status" class="status">ตั้งวันที่เราจะได้เจอกันไว้ตรงนี้นะ ♡</div>
+    <div class="setting">
+      <label for="meetDate">วันที่และเวลาที่จะได้เจอกัน</label>
+      <div class="date-row"><input id="meetDate" type="datetime-local"><button id="saveDate" class="primary">SET DATE</button></div>
+      <p class="hint">วันที่จะถูกบันทึกไว้ในเบราว์เซอร์เครื่องนี้ เปลี่ยนได้ทุกเมื่อ</p>
+    </div>
+    <div class="love-note"><span>✦</span> No matter the distance, my heart is with you. <span>✦</span></div>
+  </section>
+  <footer><span>MADE WITH LOVE</span><span>♡ FOREVER IN OUR UNIVERSE ♡</span></footer>
+</main>
+<script src="countdown.js"></script>
+</body>
+</html>

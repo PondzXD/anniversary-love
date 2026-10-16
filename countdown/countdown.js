@@ -1,41 +1,13 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
-  const dateInput = $("meetDate"), status = $("status");
-  const KEY = "our-little-universe-meeting-date";
-  let target = null;
-  try {
-    const saved = localStorage.getItem(KEY);
-    if (saved && Number.isFinite(new Date(saved).getTime())) {
-      target = new Date(saved);
-      dateInput.value = toLocalInput(target);
-    }
-  } catch (_) {}
-  function toLocalInput(date) {
-    const pad = n => String(n).padStart(2, "0");
-    return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());
-  }
-  function saveDate() {
-    const next = new Date(dateInput.value);
-    if (!dateInput.value || !Number.isFinite(next.getTime())) {
-      status.textContent = "เลือกวันและเวลาที่ถูกต้องก่อนนะ ♡";
-      return;
-    }
-    if (next.getTime() <= Date.now()) {
-      status.textContent = "วันที่นี้ผ่านไปแล้ว ลองเลือกวันในอนาคตนะ ♡";
-      return;
-    }
-    target = next;
-    try { localStorage.setItem(KEY, target.toISOString()); } catch (_) {}
-    status.textContent = "บันทึกวันของเราแล้ว รอวันที่จะได้กอดกันนะ ♡";
-    render();
-  }
-  $("saveDate").addEventListener("click", saveDate);
-  dateInput.addEventListener("keydown", e => { if (e.key === "Enter") saveDate(); });
+  const status = $("status");
+  // Fixed meeting date: 31 January 2027 (B.E. 2570), local time.
+  const target = new Date(2027, 0, 31, 0, 0, 0, 0);
   function render() {
     if (!target) {
       ["days","hours","minutes","seconds"].forEach(id => $(id).textContent = "--");
-      status.textContent = "ตั้งวันที่เราจะได้เจอกันไว้ตรงนี้นะ ♡";
+      status.textContent = "เรากำลังนับถอยหลังสู่วันที่ 31 มกราคม 2570 ♡";
       return;
     }
     let diff = target.getTime() - Date.now();
@@ -52,7 +24,7 @@
     $("hours").textContent = String(h).padStart(2,"0");
     $("minutes").textContent = String(m).padStart(2,"0");
     $("seconds").textContent = String(s).padStart(2,"0");
-    status.textContent = "เหลือเวลาอีกนิดเดียว เราก็จะได้เจอกันแล้ว ♡";
+    status.textContent = "เจอกันวันที่ 31 มกราคม 2570 · เหลือเวลาอีกนิดเดียวแล้ว ♡";
   }
   render(); setInterval(render, 1000);
 

@@ -34,11 +34,26 @@
   const field=$("photo-field");
   photoFiles.forEach((file,i)=>{const card=document.createElement("div");card.className="floating-photo";const img=document.createElement("img");img.src=file;img.alt="รูปคู่ของเรา";const heart=document.createElement("span");heart.className="photo-heart";heart.textContent="♡";const duration=24+Math.random()*18;const leftSide=i%2===0;card.style.left=leftSide?(1+Math.random()*7)+"%":(92+Math.random()*6)+"%";card.style.top=(8+(i%5)*18+Math.random()*5)+"%";card.style.setProperty("--duration",duration+"s");card.style.setProperty("--delay",(-Math.random()*duration)+"s");card.style.setProperty("--tilt",(Math.random()*8-4)+"deg");card.style.setProperty("--dx",(Math.random()*12-6)+"px");card.append(img,heart);field.appendChild(card);img.addEventListener("error",()=>card.remove());});
   const song=$("love-song");
-  // Try background audio autoplay; browsers may require a user gesture.
-  window.addEventListener("load",()=>{song.play().catch(()=>{});},{once:true});
-  // Start playback on the first user interaction if autoplay was blocked.
-  const startAudio=()=>{if(song.paused){song.volume=0.8;song.play().catch(()=>{});}};
-  ["pointerdown","touchstart","click","keydown"].forEach(eventName=>document.addEventListener(eventName,startAudio,{once:true,passive:true}));
+  // Keep retrying until a user gesture successfully starts the background track.
+  // Autoplay with sound is blocked by many browsers until the visitor interacts.
+  song.volume=0.35;
+  let audioStarted=false;
+  async function tryStartAudio(){
+    if(audioStarted || !song) return;
+    try{
+      await song.play();
+      audioStarted=true;
+      ["pointerdown","touchstart","click","keydown"].forEach(type=>{
+        document.removeEventListener(type,tryStartAudio,true);
+      });
+    }catch(error){
+      // Do not remove listeners on failure; the next interaction can retry.
+    }
+  }
+  window.addEventListener("load",tryStartAudio,{once:true});
+  ["pointerdown","touchstart","click","keydown"].forEach(type=>{
+    document.addEventListener(type,tryStartAudio,true);
+  });
 
   // Lightweight animated starfield and drifting hearts; no external images or assets.
   const canvas = $("sky"), ctx = canvas.getContext("2d");

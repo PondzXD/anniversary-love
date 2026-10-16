@@ -33,11 +33,13 @@
   const photoFiles=["LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_9.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_21.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_39.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_55.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_87.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_2.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_6.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_8.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_11.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_14.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_20.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_23.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_27.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_28.jpg"];
   const field=$("photo-field");
   photoFiles.forEach((file,i)=>{const card=document.createElement("div");card.className="floating-photo";const img=document.createElement("img");img.src=file;img.alt="รูปคู่ของเรา";const heart=document.createElement("span");heart.className="photo-heart";heart.textContent="♡";const duration=24+Math.random()*18;const leftSide=i%2===0;card.style.left=leftSide?(1+Math.random()*7)+"%":(92+Math.random()*6)+"%";card.style.top=(8+(i%5)*18+Math.random()*5)+"%";card.style.setProperty("--duration",duration+"s");card.style.setProperty("--delay",(-Math.random()*duration)+"s");card.style.setProperty("--tilt",(Math.random()*8-4)+"deg");card.style.setProperty("--dx",(Math.random()*12-6)+"px");card.append(img,heart);field.appendChild(card);img.addEventListener("error",()=>card.remove());});
-  const song=$("love-song"),play=$("music-toggle"),mute=$("music-mute"),musicStatus=$("music-status");
-  // Try audible autoplay on page load; browsers may block it until a user gesture.
-  window.addEventListener("load",()=>{song.play().then(()=>{play.textContent="Ⅱ";musicStatus.textContent="กำลังเล่นเพลงของเรา ♡";}).catch(()=>{musicStatus.textContent="ถ้าเพลงยังไม่เล่น ให้แตะ ▶ หนึ่งครั้งนะ ♡";});},{once:true});
-    play.addEventListener("click",async()=>{if(song.paused){try{await song.play();play.textContent="Ⅱ";musicStatus.textContent="กำลังเล่นเพลงของเรา ♡";}catch(e){musicStatus.textContent="แตะอีกครั้งเพื่อเล่นเพลง ♡";}}else{song.pause();play.textContent="▶";musicStatus.textContent="หยุดเพลงชั่วคราว ♡";}});
-  mute.addEventListener("click",()=>{song.muted=!song.muted;mute.textContent=song.muted?"♪̸":"♫";musicStatus.textContent=song.muted?"ปิดเสียงอยู่":"I Love You 3000 · วนซ้ำ ♡";});
+  const song=$("love-song");
+  // Try background audio autoplay; browsers may require a user gesture.
+  window.addEventListener("load",()=>{song.play().catch(()=>{});},{once:true});
+  // Start playback on the first user interaction if autoplay was blocked.
+  const startAudio=()=>{if(song.paused) song.play().catch(()=>{});};
+  document.addEventListener("pointerdown",startAudio,{once:true,passive:true});
+  document.addEventListener("keydown",startAudio,{once:true});
 
   // Lightweight animated starfield and drifting hearts; no external images or assets.
   const canvas = $("sky"), ctx = canvas.getContext("2d");

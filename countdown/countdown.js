@@ -34,27 +34,51 @@
   const field=$("photo-field");
   photoFiles.forEach((file,i)=>{const card=document.createElement("div");card.className="floating-photo";const img=document.createElement("img");img.src=file;img.alt="รูปคู่ของเรา";const heart=document.createElement("span");heart.className="photo-heart";heart.textContent="♡";const duration=24+Math.random()*18;const leftSide=i%2===0;card.style.left=leftSide?(1+Math.random()*7)+"%":(92+Math.random()*6)+"%";card.style.top=(8+(i%5)*18+Math.random()*5)+"%";card.style.setProperty("--duration",duration+"s");card.style.setProperty("--delay",(-Math.random()*duration)+"s");card.style.setProperty("--tilt",(Math.random()*8-4)+"deg");card.style.setProperty("--dx",(Math.random()*12-6)+"px");card.append(img,heart);field.appendChild(card);img.addEventListener("error",()=>card.remove());});
   const song=$("love-song");
-  // Keep retrying until a user gesture successfully starts the background track.
-  // Autoplay with sound is blocked by many browsers until the visitor interacts.
-  song.volume=0.35;
-  let audioStarted=false;
-  async function tryStartAudio(){
-    if(audioStarted || !song) return;
-    try{
+  // Background music: do not call song.load() here because it can restart/interupt
+  // a play request while the browser is already trying to begin playback.
+  song.volume = 0.35;
+  let audioStarted = false;
+  let retrying = false;
+
+  async function tryStartAudio() {
+    if (!song || retrying || (!song.paused && !song.ended)) return;
+    retrying = true;
+    try {
       await song.play();
-      audioStarted=true;
-      ["pointerdown","touchstart","click","keydown"].forEach(type=>{
-        document.removeEventListener(type,tryStartAudio,true);
-      });
-    }catch(error){
-      // Do not remove listeners on failure; the next interaction can retry.
+      audioStarted = true;
+    } catch (error) {
+      // Browsers may block autoplay until a real user gesture.
+    } finally {
+      retrying = false;
     }
   }
-  // Request the music as soon as this script runs instead of waiting for every photo/font to load.
-  song.load();
+
+  // Try immediately, then retry after a user gesture if autoplay was blocked.
   tryStartAudio();
-  ["pointerdown","touchstart","click","keydown"].forEach(type=>{
-    document.addEventListener(type,tryStartAudio,true);
+  ["pointerdown", "touchstart", "click", "keydown"].forEach(type => {
+    document.addEventListener(type, tryStartAudio, { capture: true, passive: true });
+  });
+
+  // Recover if the browser pauses the audio after tab/app switching or buffering.
+  song.addEventListener("ended", () => {
+    song.currentTime = 0;
+    tryStartAudio();
+  });
+  song.addEventListener("pause", () => {
+    if (!document.hidden && !song.ended) {
+      window.setTimeout(() => {
+        if (song.paused && !document.hidden) tryStartAudio();
+      }, 700);
+    }
+  });
+  song.addEventListener("stalled", () => {
+    if (song.paused && !document.hidden) tryStartAudio();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && song.paused) tryStartAudio();
+  });
+  window.addEventListener("pageshow", () => {
+    if (song.paused) tryStartAudio();
   });
 
   // Lightweight animated starfield and drifting hearts; no external images or assets.

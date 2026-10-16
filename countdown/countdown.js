@@ -2,12 +2,12 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const status = $("status");
-  // Fixed meeting date: 31 January 2027 (B.E. 2570), local time.
-  const target = new Date(2027, 0, 31, 0, 0, 0, 0);
+  // Fixed meeting date: after 31 January 2027 (B.E. 2570), at midnight on 1 February, local time.
+  const target = new Date(2027, 1, 1, 0, 0, 0, 0);
   function render() {
     if (!target) {
       ["days","hours","minutes","seconds"].forEach(id => $(id).textContent = "--");
-      status.textContent = "เรากำลังนับถอยหลังสู่วันที่ 31 มกราคม 2570 ♡";
+      status.textContent = "เรากำลังนับถอยหลังสู่หลังวันที่ 31 มกราคม 2570 ♡";
       return;
     }
     let diff = target.getTime() - Date.now();
@@ -24,7 +24,7 @@
     $("hours").textContent = String(h).padStart(2,"0");
     $("minutes").textContent = String(m).padStart(2,"0");
     $("seconds").textContent = String(s).padStart(2,"0");
-    status.textContent = "เจอกันวันที่ 31 มกราคม 2570 · เหลือเวลาอีกนิดเดียวแล้ว ♡";
+    status.textContent = "เจอกันหลังวันที่ 31 มกราคม 2570 · เหลือเวลาอีกนิดเดียวแล้ว ♡";
   }
   render(); setInterval(render, 1000);
 

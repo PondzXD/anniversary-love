@@ -28,6 +28,15 @@
   }
   render(); setInterval(render, 1000);
 
+
+  // Floating uploaded couple photos
+  const photoFiles=["LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_9.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_21.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_39.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_55.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_260902_87.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_2.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_6.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_8.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_11.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_14.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_20.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_23.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_27.jpg","LINE_ALBUM_%E5%B0%8F%E7%8B%97_261016_28.jpg"];
+  const field=$("photo-field");
+  photoFiles.forEach(file=>{const card=document.createElement("div");card.className="floating-photo";const img=document.createElement("img");img.src=file;img.alt="รูปคู่ของเรา";const heart=document.createElement("span");heart.className="photo-heart";heart.textContent="♡";const duration=14+Math.random()*16;card.style.left=(3+Math.random()*90)+"%";card.style.top=(8+Math.random()*75)+"%";card.style.setProperty("--duration",duration+"s");card.style.setProperty("--delay",(-Math.random()*duration)+"s");card.style.setProperty("--tilt",(Math.random()*20-10)+"deg");card.style.setProperty("--dx",(Math.random()*80-40)+"px");card.append(img,heart);field.appendChild(card);img.addEventListener("error",()=>card.remove());});
+  const song=$("love-song"),play=$("music-toggle"),mute=$("music-mute"),musicStatus=$("music-status");
+  play.addEventListener("click",async()=>{if(song.paused){try{await song.play();play.textContent="Ⅱ";musicStatus.textContent="กำลังเล่นเพลงของเรา ♡";}catch(e){musicStatus.textContent="แตะอีกครั้งเพื่อเล่นเพลง ♡";}}else{song.pause();play.textContent="▶";musicStatus.textContent="หยุดเพลงชั่วคราว ♡";}});
+  mute.addEventListener("click",()=>{song.muted=!song.muted;mute.textContent=song.muted?"♪̸":"♫";musicStatus.textContent=song.muted?"ปิดเสียงอยู่":"I Love You 3000 · วนซ้ำ ♡";});
+
   // Lightweight animated starfield and drifting hearts; no external images or assets.
   const canvas = $("sky"), ctx = canvas.getContext("2d");
   let w = 0, h = 0, dpr = 1, stars = [], hearts = [];

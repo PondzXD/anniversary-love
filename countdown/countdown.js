@@ -50,7 +50,9 @@
       // Do not remove listeners on failure; the next interaction can retry.
     }
   }
-  window.addEventListener("load",tryStartAudio,{once:true});
+  // Request the music as soon as this script runs instead of waiting for every photo/font to load.
+  song.load();
+  tryStartAudio();
   ["pointerdown","touchstart","click","keydown"].forEach(type=>{
     document.addEventListener(type,tryStartAudio,true);
   });

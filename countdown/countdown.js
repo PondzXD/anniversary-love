@@ -37,9 +37,8 @@
   // Try background audio autoplay; browsers may require a user gesture.
   window.addEventListener("load",()=>{song.play().catch(()=>{});},{once:true});
   // Start playback on the first user interaction if autoplay was blocked.
-  const startAudio=()=>{if(song.paused) song.play().catch(()=>{});};
-  document.addEventListener("pointerdown",startAudio,{once:true,passive:true});
-  document.addEventListener("keydown",startAudio,{once:true});
+  const startAudio=()=>{if(song.paused){song.volume=0.8;song.play().catch(()=>{});}};
+  ["pointerdown","touchstart","click","keydown"].forEach(eventName=>document.addEventListener(eventName,startAudio,{once:true,passive:true}));
 
   // Lightweight animated starfield and drifting hearts; no external images or assets.
   const canvas = $("sky"), ctx = canvas.getContext("2d");
